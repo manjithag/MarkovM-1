@@ -13,8 +13,9 @@ def calc_StartProbability(attri,var):
     return occurence/no_records # Returning start probability
 
 def calc_ObservationProbability(userID,attri):
-    df2 = df.loc[df['userID'] == 2]
-    var = df2.loc[:, attri]         # Obtaining the value of the given attribute and given userID
+    df2 = df.loc[df['userID'] == userID]
+    index = userID-1       # This is not always right. TO DO : Do the changes when the same userID repeats
+    var = df2.loc[index, attri]         # Obtaining the value of the given attribute and given userID
     print(var)
     occurence = df[attri].value_counts()[var]  # Calculating the number of occurences of the specific value
 
@@ -40,9 +41,5 @@ def calc_MMRisk(userID,attr):
 #print(calc_StartProbability('a1',2016))
 #print(calc_StartProbability('a1',2017))
 
-#print(calc_ObservationProbability(1,'a1'))
-#print(calc_ObservationProbability(2,'a1'))
-
-df2 = df.loc[df['userID'] == 3]
-df3 = df2['a1']
-print(df3)
+print(calc_ObservationProbability(1,'a1'))
+print(calc_ObservationProbability(4,'a1'))
