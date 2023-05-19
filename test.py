@@ -1,6 +1,5 @@
 import pandas as pd
-from with_duplicates import create_Result_Dataset
-
+from with_duplicates import create_Risk_Dataframe
 
 ## Test Case 1 : Without duplicates of users
 df1 = pd.DataFrame({'userID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -18,13 +17,9 @@ df3 = pd.DataFrame({'userID': [1, 2, 3, 4, 5, 6, 1, 1, 7, 8],
                     'a2': ['A', 'A', 'A', 'B', 'B', 'B', 'A', 'A',  'A', 'C']})
 
 sensitive_attri = ['a1','a2']    # Valid for all test cases
-attri = 'a1'
 
 ########  TEST ########
 
-create_Result_Dataset(df1,sensitive_attri)
-#create_Result_Dataset(df2,sensitive_attri)
-#create_Result_Dataset(df3,sensitive_attri)
-
-
-
+print(create_Risk_Dataframe(df1,sensitive_attri))
+print(create_Risk_Dataframe(df2,sensitive_attri))
+print(create_Risk_Dataframe(df3,sensitive_attri))

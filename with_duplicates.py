@@ -1,7 +1,7 @@
 ## MM Risk Calculation with duplicates of users ##
 import pandas as pd
 
-def create_Result_Dataset(df:pd.DataFrame,sensitive_attri:list):
+def create_Risk_Dataframe(df:pd.DataFrame,sensitive_attri:list):
 
     def calc_StartProbability(index,attri):
         # Calculate the start probability of a given attribute and index
@@ -69,7 +69,12 @@ def create_Result_Dataset(df:pd.DataFrame,sensitive_attri:list):
 
     #print(risk_list)
     risk_df = pd.DataFrame(risk_list, sensitive_attri).T   # .T is used to obtain the transpose of the dataframe
-    print(risk_df)
+
+    print(calc_MMRisk(0,'a2'))
+
+    return risk_df
+
+
 
 
 
