@@ -57,6 +57,8 @@ def calc_MMRisk(userID,attri):
     return MMRisk
 
 
+
+
 ########  TEST ########
 
 """
@@ -66,7 +68,7 @@ for i in range (1,11):
     #print(calc_ObservationProbability(i, 'a2'))
     #print(calc_TransitionProbability(i))
 
-"""
+
 for i in range (1,11):
     print(calc_MMRisk(i,'a1'))
 
@@ -75,4 +77,4 @@ print('\n')
 for i in range (1,11):
     print(calc_MMRisk(i,'a2'))
 
-
+"""
