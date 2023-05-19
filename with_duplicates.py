@@ -24,25 +24,30 @@ def calc_ObservationProbability(index,attri):
 
     df2 = df.loc[df[attri] == attri_val]
     no_records = df2.shape[0]            # Counting the number of records of the dataset
-    val = df2.loc[index, attri]         # Obtaining the value of the given attribute and given userID
+    #val = df2.loc[index, attri]         # Obtaining the value of the given attribute and given userID
 
     occurrence = df2['userID'].value_counts()[userID]  # Calculating the number of occurences of the specific value
 
     return (1-occurrence/no_records)
 
-def calc_TransitionProbability(userID):
+def calc_TransitionProbability(index,attri):
     # Calculates P(vj+1/vj )
 
-    index = userID - 1  # This is not always right. TO DO : Do the changes when the same userID repeats
-    val1 = df.loc[index]['a1']
-    val2 = df.loc[index]['a2']
+    attri1 = attri              # Assigning the passed attribute (The attribute relevant to the risk of re-identification
 
-    occurrence_attri1 = df['a1'].value_counts()[val1]  # Calculating the number of occurrences of the specific value
+    for i in sensitive_attri:  # Assigning the other attribute
+        if attri1 != i:
+            attri2 = i
 
-    df3 = df.loc[df['a1'] == val1]
-    occurrence_attri2 = df3['a2'].value_counts()[val2]  # Calculating the number of occurrences of the specific value
+    val_attri1 = df.loc[index][attri1]
+    val_attri2 = df.loc[index][attri2]
 
-    return occurrence_attri2/occurrence_attri1
+    df3 = df.loc[df[attri1] == val_attri1]
+    no_records = df3.shape[0]  # Counting the number of records of the dataset
+
+    occurrence_attri2 = df3[attri2].value_counts()[val_attri2]  # Calculating the number of occurrences of the specific value
+
+    return occurrence_attri2/no_records
 
 def calc_MMRisk(userID,attri):
     attri1 = attri          # Assigning the passed attribute
@@ -64,9 +69,9 @@ def calc_MMRisk(userID,attri):
 
 for i in range (10):        # Looping by index of the dataset
     #print(calc_StartProbability(i,'a1'))
-    print(calc_ObservationProbability(i, 'a1'))
+    #print(calc_ObservationProbability(i, 'a1'))
     #print(calc_ObservationProbability(i, 'a2'))
-    #print(calc_TransitionProbability(i))
+    #print(calc_TransitionProbability(i,'a1'))
 
 
 
