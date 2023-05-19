@@ -82,3 +82,10 @@ for i in range (1,11):
 """
 for i in range (1,11):
     print(calc_MMRisk(i,'a1'))
+
+print('\n')
+
+for i in range (1,11):
+    print(calc_MMRisk(i,'a2'))
+
+
