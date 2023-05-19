@@ -1,3 +1,5 @@
+## MM Risk Calculation without duplicates of users ##
+
 import pandas as pd
 
 df = pd.DataFrame({'userID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
