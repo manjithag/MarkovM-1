@@ -16,13 +16,21 @@ def calc_ObservationProbability(userID,attri):
     df2 = df.loc[df['userID'] == userID]
     index = userID-1       # This is not always right. TO DO : Do the changes when the same userID repeats
     var = df2.loc[index, attri]         # Obtaining the value of the given attribute and given userID
-    print(var)
+    #print(var)
     occurence = df[attri].value_counts()[var]  # Calculating the number of occurences of the specific value
 
     return (1-1/occurence)
 
+def calc_TransitionProbability(userID):
+    # Calculates P(vj+1/vj )
 
+    index = userID - 1  # This is not always right. TO DO : Do the changes when the same userID repeats
+    attri1 = df.loc[[index,'a1']]
+    attri2 = df.loc[[index, 'a2']]
 
+    print(attri2)
+    print(' & ')
+    print(attri1)
 
 
 
@@ -41,5 +49,10 @@ def calc_MMRisk(userID,attr):
 #print(calc_StartProbability('a1',2016))
 #print(calc_StartProbability('a1',2017))
 
-print(calc_ObservationProbability(1,'a1'))
-print(calc_ObservationProbability(4,'a1'))
+#print(calc_ObservationProbability(1,'a1'))
+#print(calc_ObservationProbability(4,'a1'))
+#print(calc_ObservationProbability(10,'a1'))
+
+print(calc_TransitionProbability(1))
+#print(calc_TransitionProbability(4))
+#print(calc_TransitionProbability(10))
