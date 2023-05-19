@@ -1,5 +1,5 @@
 import pandas as pd
-from with_duplicates import calc_MMRisk,calc_StartProbability,calc_ObservationProbability,calc_TransitionProbability
+from with_duplicates import create_Result_Dataset
 
 
 ## Test Case 1 : Without duplicates of users
@@ -18,26 +18,13 @@ df3 = pd.DataFrame({'userID': [1, 2, 3, 4, 5, 6, 1, 1, 7, 8],
                     'a2': ['A', 'A', 'A', 'B', 'B', 'B', 'A', 'A',  'A', 'C']})
 
 sensitive_attri = ['a1','a2']    # Valid for all test cases
+attri = 'a1'
 
 ########  TEST ########
 
-'''
-for i in range (10):        # Looping by index of the dataset
-    #print(calc_StartProbability(i,'a1'))
-    #print(calc_ObservationProbability(i, 'a1'))
-    #print(calc_ObservationProbability(i, 'a2'))
-    #print(calc_TransitionProbability(i,'a1'))
-
-'''
-
-
-for i in range (10):
-    print(calc_MMRisk(i,'a1'))
-
-print('\n')
-
-for i in range (10):
-    print(calc_MMRisk(i,'a2'))
+create_Result_Dataset(df1,sensitive_attri)
+#create_Result_Dataset(df2,sensitive_attri)
+#create_Result_Dataset(df3,sensitive_attri)
 
 
 
