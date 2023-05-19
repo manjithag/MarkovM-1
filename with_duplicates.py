@@ -56,7 +56,7 @@ def calc_MMRisk(userID,attri):
         if attri1 != i:
           attri2 = i
 
-    MMProb = calc_StartProbability(userID,attri1)*calc_ObservationProbability(userID,attri1)*calc_TransitionProbability(userID)*calc_ObservationProbability(userID,attri2)
+    MMProb = calc_StartProbability(userID,attri1)*calc_ObservationProbability(userID,attri1)*calc_TransitionProbability(userID,attri1)*calc_ObservationProbability(userID,attri2)
     MMRisk = 1 - MMProb
 
     MMRisk = round(MMRisk,3)        # Round off the value of MMRisk to 3 decimal points
@@ -66,22 +66,22 @@ def calc_MMRisk(userID,attri):
 
 ########  TEST ########
 
-
+'''
 for i in range (10):        # Looping by index of the dataset
     #print(calc_StartProbability(i,'a1'))
     #print(calc_ObservationProbability(i, 'a1'))
     #print(calc_ObservationProbability(i, 'a2'))
     #print(calc_TransitionProbability(i,'a1'))
 
+'''
 
 
-"""
-for i in range (1,11):
+for i in range (10):
     print(calc_MMRisk(i,'a1'))
 
 print('\n')
 
-for i in range (1,11):
+for i in range (10):
     print(calc_MMRisk(i,'a2'))
 
-"""
+
