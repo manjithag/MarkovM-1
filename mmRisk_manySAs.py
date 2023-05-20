@@ -82,7 +82,8 @@ def create_Risk_Dataframe(df:pd.DataFrame,sensitive_attri:list):
 
 
     print(risk_list)
-    #risk_df = pd.DataFrame(risk_list, 'PR').T   # .T is used to obtain the transpose of the dataframe
+    #risk_df = pd.DataFrame(risk_list, ['PR'])   # .T is used to obtain the transpose of the dataframe
+    #print(risk_df)
 
     #return risk_df
 
