@@ -1,6 +1,7 @@
-## MM Risk Calculation with duplicates of users ##
-import pandas as pd
+## MM Risk Calculation with and without duplicates of users
+## Valid only for two sensitive attributes
 
+import pandas as pd
 def create_Risk_Dataframe(df:pd.DataFrame,sensitive_attri:list):
 
     """
