@@ -67,8 +67,8 @@ def create_Risk_Dataframe(df:pd.DataFrame,sensitive_attri:list):
             if attri1 != i:
               attri2 = i
 
-        MMProb = calc_StartProbability(userID,attri1)*calc_ObservationProbability(userID,attri1)*calc_TransitionProbability(userID,attri1)*calc_ObservationProbability(userID,attri2)
-        MMRisk = 1 - MMProb
+        joint_prob = calc_StartProbability(userID,attri1)*calc_ObservationProbability(userID,attri1)*calc_TransitionProbability(userID,attri1)*calc_ObservationProbability(userID,attri2)
+        MMRisk = 1 - joint_prob
         MMRisk = round(MMRisk,3)        # Round off the value of MMRisk to 3 decimal points
 
         return MMRisk
