@@ -53,12 +53,12 @@ sensitive_attri8 = ['a2','a4','a1','a3']    # Valid for test case 5 (Shortly kno
 #print(create_Risk_Dataframe(df3,sensitive_attri))
 #print(create_Risk_Dataframe(df4,sensitive_attri2))
 
-#create_Risk_Dataframe(df4,sensitive_attri2)
-#create_Risk_Dataframe(df4,sensitive_attri3)
-#create_Risk_Dataframe(df4,sensitive_attri4)
+create_Risk_Dataframe(df4,sensitive_attri2)
+create_Risk_Dataframe(df4,sensitive_attri3)
+create_Risk_Dataframe(df4,sensitive_attri4)
 
-#create_Risk_Dataframe(df3,sensitive_attri1)
-#create_Risk_Dataframe(df3,sensitive_attri5)
+create_Risk_Dataframe(df3,sensitive_attri1)
+create_Risk_Dataframe(df3,sensitive_attri5)
 
 create_Risk_Dataframe(df5,sensitive_attri6)
 create_Risk_Dataframe(df5,sensitive_attri7)

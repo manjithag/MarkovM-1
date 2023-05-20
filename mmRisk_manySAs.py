@@ -72,14 +72,36 @@ def create_Risk_Dataframe(df:pd.DataFrame,sensitive_attri:list):
 
         return MMRisk
 
-    risk_list = []                      # List to store calculated risks for every index
 
+
+    risk_list = []                      # List to store calculated risks for every index
     for i in range(df.shape[0]):            # Looping for every index
         risk_list.append(calc_MMRisk(i,sensitive_attri[0]))     # Starting from the first attribute
 
-
     print(risk_list)
     risk_df = pd.DataFrame(risk_list, columns = ['PR']).T   # .T is used to obtain the transpose of the dataframe
+
+    PRmin = min(risk_list)
+    PRmax = max(risk_list)
+    PRmean = sum(risk_list)/len(risk_list)
+    PRmean = round(PRmean,3)
+
+    # Calculating PR median
+    risk_list.sort()
+    mid = len(risk_list) // 2
+    PRmedian = (risk_list[mid] + risk_list[mid-1]) / 2
+    PRmedian = round(PRmedian,3)
+
+    PRmarketer = risk_list.count(1) / len(risk_list)        # = (No of records with risk of 1) / (total records)
+
+    print('PR min = ' + str(PRmin))
+    print('PR max = ' + str(PRmax))
+    print('PR mean = ' + str(PRmean))
+    print('PR median = ' + str(PRmedian))
+    print('PR marketer = ' + str(PRmarketer))
+    print(risk_list)
+    print('\n')
+
     return risk_df
 
 
