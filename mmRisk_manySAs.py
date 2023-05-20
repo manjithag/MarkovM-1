@@ -6,11 +6,8 @@ def create_Risk_Dataframe(df:pd.DataFrame,sensitive_attri:list):
 
     """
     Returns a dataframe with the values of risk of re-identification for each record (users / index)
-    and for each sensitive attributes
-
         INPUTS  : df = Original dataset : Pandas dataframe
                   sensitive_attri = Column names of sensitive attributes : List
-
         RETURN  : Risks of re-identifications dataset : Pandas dataframe
     """
 
@@ -82,10 +79,8 @@ def create_Risk_Dataframe(df:pd.DataFrame,sensitive_attri:list):
 
 
     print(risk_list)
-    #risk_df = pd.DataFrame(risk_list, ['PR'])   # .T is used to obtain the transpose of the dataframe
-    #print(risk_df)
-
-    #return risk_df
+    risk_df = pd.DataFrame(risk_list, columns = ['PR']).T   # .T is used to obtain the transpose of the dataframe
+    return risk_df
 
 
 
