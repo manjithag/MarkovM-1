@@ -1,5 +1,5 @@
 import pandas as pd
-from with_duplicates import create_Risk_Dataframe
+from  import create_Risk_Dataframe
 
 ## Test Case 1 : Without duplicates of users
 df1 = pd.DataFrame({'userID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
