@@ -8,16 +8,11 @@ of attributes with lower risks.
 import pandas as pd
 from mmRisk_manySAs import create_Risk_Dataframe
 
-
-def calc_correlation (attri1, attri2):
-    #' This returns the Cramer's V Correlation scores between the given attributes of attri1 & attri2
-    pass
-
 def find_workflow(df : pd.DataFrame, attributes : list):
     ## This finds the ordered attributes o1,⋯, om that gives the highest mean, median, maximum or marketer risk.
 
-    ## 1. Calculate the single attribute risks.
-    def calc_single_attribute_risks(attributes):
+    ## 1. Calculate the single attribute risks
+    def calc_single_attribute_risks():
         # Calculate the single attribute risks of a given attribute list
 
         no_records = df.shape[0]        # Counting the number of records of the dataset
@@ -43,7 +38,15 @@ def find_workflow(df : pd.DataFrame, attributes : list):
         print(max_single_attri_risk)
         print(attribute_with_max_risk)
 
-    calc_single_attribute_risks(attributes)
+    calc_single_attribute_risks()
+
+    ## 1. Calculate the correlation scores between attributes
+    def calc_correlation():
+        # ' This returns the Cramer's V Correlation scores between the given attributes of attri1 & attri2
+        pass
+
+
+
 
 
 
