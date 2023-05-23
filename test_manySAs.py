@@ -53,6 +53,7 @@ sensitive_attri8 = ['a4','a3','a2','a1']    # Valid for test case 5 (Shortly kno
 #print(create_Risk_Dataframe(df3,sensitive_attri))
 #print(create_Risk_Dataframe(df4,sensitive_attri2))
 
+## Testing different orders of attributes --> Returns different results
 #create_Risk_Dataframe(df4,sensitive_attri2)
 #create_Risk_Dataframe(df4,sensitive_attri3)
 #create_Risk_Dataframe(df4,sensitive_attri4)
