@@ -14,7 +14,7 @@ attributes1 = ['a1','a2','a3','a4']
 attributes2 = ['a3','a1','a4','a2']
 
 find_workflow(df1,attributes1)
-find_workflow(df1,attributes2)
+#find_workflow(df1,attributes2)
 
 
 

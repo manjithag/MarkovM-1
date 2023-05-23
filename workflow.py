@@ -6,6 +6,8 @@ only considers the potential combinations that would give the highest risk and p
 of attributes with lower risks.
 '''
 import pandas as pd
+import scipy.stats as stats
+import numpy as np
 from mmRisk_manySAs import create_Risk_Dataframe
 
 def find_workflow(df : pd.DataFrame, attributes : list):
@@ -41,9 +43,45 @@ def find_workflow(df : pd.DataFrame, attributes : list):
     calc_single_attribute_risks()
 
     ## 1. Calculate the correlation scores between attributes
-    def calc_correlation():
+    def calc_correlation(attri1, attri2):
         # ' This returns the Cramer's V Correlation scores between the given attributes of attri1 & attri2
-        pass
+
+        contingency_table = pd.crosstab(df[attri1], df[attri2])
+        arr = contingency_table.to_numpy()
+
+        # Chi-squared test statistic, sample size, and minimum of rows and columns
+        x2 = stats.chi2_contingency(arr, correction=False)[0]
+
+        n = np.sum(arr)
+        min_dim = min(arr.shape) - 1
+
+        # calculate Cramer's V
+        V = np.sqrt((x2 / n) / min_dim)
+
+        return V
+
+    corr_list = []
+
+    for attri2 in attributes:
+        corr = []
+
+        for attri1 in attributes:
+            corr.append(calc_correlation(attri1,attri2))
+        corr_list.append(corr)
+
+    corr_df = pd.DataFrame(corr_list, columns = attributes, index = attributes)
+
+
+    print(corr_df)
+
+
+
+
+
+
+
+
+
 
 
 

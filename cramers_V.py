@@ -11,9 +11,10 @@ df = pd.DataFrame({'userID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 
 
 data1 = pd.crosstab(df['a1'], df['a2'])
+data = data1.to_numpy()
 
 #create 2x2 table
-data = np.array([[6,9], [8, 5], [12, 9]])
+#data = np.array([[6, 9, 10], [8, 5, 1], [12, 9, 2]])
 
 #Chi-squared test statistic, sample size, and minimum of rows and columns
 X2 = stats.chi2_contingency(data, correction=False)[0]
@@ -25,8 +26,9 @@ V = np.sqrt((X2/n) / minDim)
 
 #display Cramer's V
 print(V)
-print(data1)
-print(X2)
+#print(data)
+#print(X2)
+#print(data2)
 
 
 
