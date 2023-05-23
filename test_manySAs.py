@@ -57,9 +57,14 @@ sensitive_attri8 = ['a4','a3','a2','a1']    # Valid for test case 5 (Shortly kno
 #create_Risk_Dataframe(df4,sensitive_attri3)
 #create_Risk_Dataframe(df4,sensitive_attri4)
 
+create_Risk_Dataframe(df5,sensitive_attri7)
+
+## Testing reverse ordered attributes --> Returns same results
+
+## 2 attributes
 #create_Risk_Dataframe(df3,sensitive_attri1)
 #create_Risk_Dataframe(df3,sensitive_attri5)
 
+## 4 attributes
 create_Risk_Dataframe(df5,sensitive_attri6)
-create_Risk_Dataframe(df5,sensitive_attri7)
-create_Risk_Dataframe(df5,sensitive_attri8)     # Testing reverse ordered attributes of sensitiv_attri6. Same results
+create_Risk_Dataframe(df5,sensitive_attri8)
