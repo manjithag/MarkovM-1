@@ -44,7 +44,7 @@ sensitive_attri5 = ['a2','a1']
 
 sensitive_attri6 = ['a1','a2','a3','a4']    # Valid for test case 5 (Shortly known as SA)
 sensitive_attri7 = ['a2','a4','a3','a1']    # Valid for test case 5 (Shortly known as SA)
-sensitive_attri8 = ['a2','a4','a1','a3']    # Valid for test case 5 (Shortly known as SA)
+sensitive_attri8 = ['a4','a3','a2','a1']    # Valid for test case 5 (Shortly known as SA)
 
 ########  TEST ########
 
@@ -53,13 +53,13 @@ sensitive_attri8 = ['a2','a4','a1','a3']    # Valid for test case 5 (Shortly kno
 #print(create_Risk_Dataframe(df3,sensitive_attri))
 #print(create_Risk_Dataframe(df4,sensitive_attri2))
 
-create_Risk_Dataframe(df4,sensitive_attri2)
-create_Risk_Dataframe(df4,sensitive_attri3)
-create_Risk_Dataframe(df4,sensitive_attri4)
+#create_Risk_Dataframe(df4,sensitive_attri2)
+#create_Risk_Dataframe(df4,sensitive_attri3)
+#create_Risk_Dataframe(df4,sensitive_attri4)
 
-create_Risk_Dataframe(df3,sensitive_attri1)
-create_Risk_Dataframe(df3,sensitive_attri5)
+#create_Risk_Dataframe(df3,sensitive_attri1)
+#create_Risk_Dataframe(df3,sensitive_attri5)
 
 create_Risk_Dataframe(df5,sensitive_attri6)
 create_Risk_Dataframe(df5,sensitive_attri7)
-create_Risk_Dataframe(df6,sensitive_attri6)
+create_Risk_Dataframe(df5,sensitive_attri8)     # Testing reverse ordered attributes of sensitiv_attri6. Same results
