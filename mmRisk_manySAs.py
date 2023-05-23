@@ -81,6 +81,8 @@ def create_Risk_Dataframe(df:pd.DataFrame,sensitive_attri:list):
     print(risk_list)
     risk_df = pd.DataFrame(risk_list, columns = ['PR']).T   # .T is used to obtain the transpose of the dataframe
 
+    ## Metrices for the whole dataset
+
     PRmin = min(risk_list)
     PRmax = max(risk_list)
     PRmean = sum(risk_list)/len(risk_list)
@@ -92,7 +94,9 @@ def create_Risk_Dataframe(df:pd.DataFrame,sensitive_attri:list):
     PRmedian = (risk_list[mid] + risk_list[mid-1]) / 2
     PRmedian = round(PRmedian,3)
 
-    PRmarketer = risk_list.count(1) / len(risk_list)        # = (No of records with risk of 1) / (total records)
+    # Calculating Marketer Risk
+    # Marketer Risk = (No of records with risk of 1) / (total records)
+    PRmarketer = risk_list.count(1) / len(risk_list)
 
     print('PR min = ' + str(PRmin))
     print('PR max = ' + str(PRmax))
