@@ -31,18 +31,11 @@ def find_workflow(df : pd.DataFrame, attributes : list):
             single_attribute_risks.append(start_prob/no_records)   # Appending with mean single attribute risk
 
         single_attribute_risks = [round(num, 4) for num in single_attribute_risks]
-        max_single_attri_risk = max(single_attribute_risks)     # Highest single attribute mean risk
 
-        # Atrribute name having the highest single attribute mean risk
-        attribute_with_max_risk = attributes[single_attribute_risks.index(max_single_attri_risk)]
+        return single_attribute_risks
 
-        print(single_attribute_risks)
-        print(max_single_attri_risk)
-        print(attribute_with_max_risk)
 
-    calc_single_attribute_risks()
-
-    ## 1. Calculate the correlation scores between attributes
+    ## 2. Calculate the correlation scores between attributes
     def calc_correlation(attri1, attri2):
         # ' This returns the Cramer's V Correlation scores between the given attributes of attri1 & attri2
 
@@ -56,9 +49,9 @@ def find_workflow(df : pd.DataFrame, attributes : list):
         min_dim = min(arr.shape) - 1
 
         # calculate Cramer's V
-        V = np.sqrt((x2 / n) / min_dim)
+        v = np.sqrt((x2 / n) / min_dim)
 
-        return V
+        return v
 
     corr_list = []
 
@@ -71,8 +64,33 @@ def find_workflow(df : pd.DataFrame, attributes : list):
 
     corr_df = pd.DataFrame(corr_list, columns = attributes, index = attributes)
 
-
     print(corr_df)
+
+    ## 3. Finding the attribute which has the highest mean single attribute risk (o1)
+
+    arr = calc_single_attribute_risks()
+    sort_arr = arr.sort()
+
+    max_single_attri_risk = sort_arr[0]  # Highest single attribute mean risk = 1st element of the sorted array
+
+    # Atrribute name having the highest single attribute mean risk
+    o1 = attributes[arr.index(max_single_attri_risk)]
+
+    print(max_single_attri_risk)
+    print(o1)
+
+    ## 4. Finding oi from i = 2 to i = m-1
+    arr_o = []
+
+    for oi in arr_o:
+        pass
+
+
+
+
+
+
+
 
 
 
