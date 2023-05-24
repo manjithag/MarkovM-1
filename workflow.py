@@ -82,19 +82,56 @@ def find_workflow(df : pd.DataFrame, attributes : list):
 
     ## 4. Finding o(i+1) from i = 2 to i = m-1
     arr_o = []
+    arr_o.append(o1)
+    m = len(attributes)
 
-    for ind in range (len(attributes)-1):
+    for val in range (1,m):       # This for loop runs from i=1 to i=m-1
         # a) Finding the attribute having the next highest single attribute risk
-        oj = sort_arr[ind+1]
+        oj = sort_arr[val]
 
         # b) Finding the attribute having the highest correlation with oi
-        corr_series = corr_df[o1].sort_values(ascending=False)
+        corr_series = corr_df[oi]
 
-        for corr in corr_series
-            if
+        # Get the index series when the data is sorted in descending order
+        descending_indexes = corr_series.argsort()[::-1]
+
+        # Convert the index series to a list
+        descending_indexes_list = descending_indexes.tolist()
+
+        # Calculating single attribute risk for o1...oj combination
+        sar_oj = 0
+
+        # Calculating single attribute risk for o1...ok combination
+        sar_ok = 0
+
+        # Appending the array of 'o' with the attribute with higher single attribute risk
+
+        if sar_oj >= sar_ok:
+            arr_o.append(oj)
+        else:
+            arr_o.append(ok)
+
+    return arr_o
 
 
-        corr_max = corr_arr[1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ok =
+
+        print(descending_indexes_list)
 
 
 

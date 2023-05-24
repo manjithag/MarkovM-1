@@ -8,7 +8,26 @@ df1 = pd.DataFrame({'userID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     'a3': ['aa', 'bb', 'cc', 'aa', 'aa', 'cc', 'cc', 'cc',  'cc', 'cc'],
                     'a4': [33, 33, 37, 38, 33, 39, 34, 34,  35, 35]})
 
-print(df1['a1'])
-print(df1['a1'].sort_values(ascending=False))
+#print(df1['a1'])
+serr = df1['a1']
+arr = serr.to_list()
+#arr = arr.sort()
+print(serr)
+#o2 = serr[1]
+#print(o2)
+print(arr)
+ind = serr[serr == arr[1]]
+print(ind)
+
+# Get the index series when the data is sorted in descending order
+descending_indexes = serr.argsort()[::-1]
+
+# Convert the index series to a list
+descending_indexes_list = descending_indexes.tolist()
+
+print(descending_indexes_list)
+
+
+
 
 
