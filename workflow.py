@@ -8,6 +8,7 @@ of attributes with lower risks.
 import pandas as pd
 import scipy.stats as stats
 import numpy as np
+from itertools import permutations
 from mmRisk_manySAs import create_Risk_Dataframe
 
 def find_workflow(df : pd.DataFrame, attributes : list):
@@ -81,6 +82,27 @@ def find_workflow(df : pd.DataFrame, attributes : list):
     print(o1)
 
     ## 4. Finding o(i+1) from i = 2 to i = m-1
+
+
+    def find_attri_combinations(attributes):
+        # This function finds all the attribute combinations (without symetry) with all elements in 'attributes'
+
+        #Length of the attributes list
+        length_combinations = len(attributes)
+
+        # Generate all the shuffled combinations of the elements (With all elements) of the attribute list
+        all_combinations = list(permutations(attributes, length_combinations))
+
+        # A list for storing the combinations excluding symmetric
+        combinations_without_symm = []
+
+        # Checking for the list with its reversed lists
+        for comb in all_combinations:
+            if comb not in combinations_without_symm and comb[::-1] not in combinations_without_symm:
+                combinations_without_symm.append(comb)
+
+        return combinations_without_symm
+
     arr_o = []
     arr_o.append(o1)
     m = len(attributes)
@@ -90,7 +112,7 @@ def find_workflow(df : pd.DataFrame, attributes : list):
         oj = sort_arr[val]
 
         # b) Finding the attribute having the highest correlation with oi
-        corr_series = corr_df[oi]
+        corr_series = corr_df[arr_o[val]]
 
         # Get the index series when the data is sorted in descending order
         descending_indexes = corr_series.argsort()[::-1]
@@ -98,10 +120,12 @@ def find_workflow(df : pd.DataFrame, attributes : list):
         # Convert the index series to a list
         descending_indexes_list = descending_indexes.tolist()
 
-        # Calculating single attribute risk for o1...oj combination
+        ok = descending_indexes_list[val]
+
+        # Calculating PRmean for all the permutations of o1...oj attributes
         sar_oj = 0
 
-        # Calculating single attribute risk for o1...ok combination
+        # Calculating PRmean for all the permutations of o1...oj attributes
         sar_ok = 0
 
         # Appending the array of 'o' with the attribute with higher single attribute risk
