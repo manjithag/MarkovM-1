@@ -9,9 +9,10 @@ import pandas as pd
 import scipy.stats as stats
 import numpy as np
 from itertools import permutations
+from mmrisk_for_workflow import calc_pr_mean
 from mmRisk_manySAs import create_Risk_Dataframe
 
-def find_workflow(df : pd.DataFrame, attributes : list):
+def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     ## This finds the ordered attributes o1,⋯, om that gives the highest mean, median, maximum or marketer risk.
 
     ## 1. Calculate the single attribute risks
@@ -65,21 +66,22 @@ def find_workflow(df : pd.DataFrame, attributes : list):
 
     corr_df = pd.DataFrame(corr_list, columns = attributes, index = attributes)
 
-    print(corr_df)
+    #print(corr_df)
 
     ## 3. Finding the attribute which has the highest mean single attribute risk (o1)
 
-    arr = calc_single_attribute_risks()         # A array with mean single attribute risk of all attributes
+    mean_sar_arr = calc_single_attribute_risks()         # A array with mean single attribute risk of all attributes
                                                 # Length = No of attributes
-    sort_arr = arr.sort()                       # Sorting the array for descending order
+    mean_sar_arr.sort(reverse=True)                      # Sorting the array for descending order
+    #print(mean_sar_arr)
 
-    max_single_attri_risk = sort_arr[0]  # Highest single attribute mean risk = 1st element of the sorted array
+    max_single_attri_risk = mean_sar_arr[0]  # Highest single attribute mean risk = 1st element of the sorted array
 
     # Atrribute name having the highest single attribute mean risk
-    o1 = attributes[arr.index(max_single_attri_risk)]
+    o1 = attributes[mean_sar_arr.index(max_single_attri_risk)]
 
     print(max_single_attri_risk)
-    print(o1)
+    #print(o1)
 
     ## 4. Finding o(i+1) from i = 2 to i = m-1
 
@@ -109,7 +111,7 @@ def find_workflow(df : pd.DataFrame, attributes : list):
 
     for val in range (1,m):       # This for loop runs from i=1 to i=m-1
         # a) Finding the attribute having the next highest single attribute risk
-        oj = sort_arr[val]
+        oj = mean_sar_arr[val]
 
         # b) Finding the attribute having the highest correlation with oi
         corr_series = corr_df[arr_o[val]]
@@ -122,18 +124,35 @@ def find_workflow(df : pd.DataFrame, attributes : list):
 
         ok = descending_indexes_list[val]
 
-        # Calculating PRmean for all the permutations of o1...oj attributes
-        sar_oj = 0
+        # Calculating PRmean for all the combinations of o1...oj attributes
 
-        # Calculating PRmean for all the permutations of o1...oj attributes
-        sar_ok = 0
+        arr_with_oj = arr_o + list(oj)
+        combinations_j = find_attri_combinations(arr_with_oj)
+        max_pr_mean = 0
+        max_combination = []
 
-        # Appending the array of 'o' with the attribute with higher single attribute risk
+        for comb in combinations_j:
+            pr_mean = calc_pr_mean(comb)
+            if pr_mean > max_pr_mean:
+                max_combination = comb
+                max_pr_mean = pr_mean
 
-        if sar_oj >= sar_ok:
-            arr_o.append(oj)
-        else:
-            arr_o.append(ok)
+        # Calculating PRmean for all the permutations of o1...ok attributes
+
+        arr_with_ok = arr_o + list(ok)
+        combinations_k = find_attri_combinations(arr_with_ok)
+
+        for comb in combinations_k:
+            pr_mean = calc_pr_mean(comb)
+            if pr_mean > max_pr_mean:
+                max_combination = comb
+                max_pr_mean = pr_mean
+
+        # If calculated PRmean > theta (privacy risk probability threshold) --> Break
+        if max_pr_mean > theta:
+            break
+
+    arr_o = max_combination
 
     return arr_o
 
@@ -152,23 +171,6 @@ def find_workflow(df : pd.DataFrame, attributes : list):
 
 
 
-
-        ok =
-
-        print(descending_indexes_list)
-
-
-
-
-
-
-
-
-
-
-
-
-        ok = 1
 
 
 

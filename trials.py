@@ -51,11 +51,22 @@ def find_attri_combinations(attributes):
 
     return combinations_without_symm
 
-print(find_attri_combinations(sample_list))
+#print(find_attri_combinations(sample_list))
 
 
 
 #print(list_combinations)
+
+
+
+arr = ['a', 'b', 'c']
+char = 'd'
+#print(arr+list(char))
+
+arr = [0.2, 1, 5, 0]
+print(arr)
+arr.sort(reverse=True)
+print(arr)
 
 
 
