@@ -13,7 +13,7 @@ df1 = pd.DataFrame({'userID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 attributes1 = ['a1','a2','a3','a4']
 attributes2 = ['a3','a1','a4','a2']
 
-print(find_workflow(df1,attributes1,0.5))
+print(find_workflow(df1,attributes1,0.8))
 #find_workflow(df1,attributes2)
 
 

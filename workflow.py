@@ -71,17 +71,26 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     ## 3. Finding the attribute which has the highest mean single attribute risk (o1)
 
     mean_sar_arr = calc_single_attribute_risks()         # A array with mean single attribute risk of all attributes
-                                                # Length = No of attributes
-    mean_sar_arr.sort(reverse=True)                      # Sorting the array for descending order
+                                                        # Length = No of attributes
+    #mean_sar_arr.sort(reverse=True)                      # Sorting the array for descending order
     #print(mean_sar_arr)
 
-    max_single_attri_risk = mean_sar_arr[0]  # Highest single attribute mean risk = 1st element of the sorted array
+    mean_sar_series = pd.Series(mean_sar_arr,index = attributes)
+
+    # Get the index series when the data is sorted in descending order
+    mean_sar_series_indexes = mean_sar_series.argsort()[::-1]
+
+    # Convert the index series to a list
+    mean_sar_series_indexes_list = mean_sar_series_indexes.tolist()
+
+    #max_single_attri_risk = max(mean_sar_arr)
+    #max_single_attri_risk = mean_sar_arr[0]  # Highest single attribute mean risk = 1st element of the sorted array
 
     # Atrribute name having the highest single attribute mean risk
-    o1 = attributes[mean_sar_arr.index(max_single_attri_risk)]
+    o1 = mean_sar_series_indexes_list[0]
 
-    print(max_single_attri_risk)
-    #print(o1)
+    #print(max_single_attri_risk)
+    print(o1)
 
     ## 4. Finding o(i+1) from i = 2 to i = m-1
 
@@ -111,10 +120,12 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
     for val in range (1,m):       # This for loop runs from i=1 to i=m-1
         # a) Finding the attribute having the next highest single attribute risk
-        oj = mean_sar_arr[val]
+        oj = mean_sar_series_indexes_list[val]
+        print(oj)
 
         # b) Finding the attribute having the highest correlation with oi
-        corr_series = corr_df[arr_o[val]]
+        corr_series = corr_df[arr_o[val-1]]
+        print(corr_series)
 
         # Get the index series when the data is sorted in descending order
         descending_indexes = corr_series.argsort()[::-1]
@@ -151,8 +162,8 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
         # If calculated PRmean > theta (privacy risk probability threshold) --> Break
         if max_pr_mean > theta:
             break
-
-    arr_o = max_combination
+        arr_o = max_combination
+        print(arr_o)
 
     return arr_o
 
