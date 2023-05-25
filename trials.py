@@ -64,8 +64,17 @@ char = 'd'
 #print(arr+list(char))
 
 arr = [0.2, 1, 5, 0]
-print(arr)
+#print(arr)
 arr.sort(reverse=True)
+#print(arr)
+
+
+
+arr = ['a1', 'a2', 'a4', 'a3']
+data = ['a1', 'a2']
+char = 'a5'
+
+arr.remove(char)
 print(arr)
 
 
