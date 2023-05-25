@@ -130,7 +130,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
         # a) Finding the attribute having the next highest single attribute risk
         oj = mean_sar_series_indexes_list[val]
-        #print(mean_sar_series_indexes_list)
+        print('Oj =' + str(oj))
 
         # b) Finding the attribute having the highest correlation with oi
         corr_series = corr_df[arr_o[val-1]]
@@ -147,6 +147,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
             corr_series_indexes_list.append(attributes[ind])
 
         ok = corr_series_indexes_list[val]
+        print('Ok = ' + str(ok))
 
         # Calculating PRmean for all the combinations of o1...oj attributes
 
@@ -162,7 +163,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
         for comb in combinations_j:
             pr_mean = calc_pr_mean(df, comb)
             if pr_mean > max_pr_mean:
-                max_combination = comb
+                max_combination = list(comb)
                 max_pr_mean = pr_mean
 
         # Calculating PRmean for all the permutations of o1...ok attributes
@@ -174,7 +175,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
             #print(comb)
             pr_mean = calc_pr_mean(df, comb)
             if pr_mean > max_pr_mean:
-                max_combination = comb
+                max_combination = list(comb)
                 max_pr_mean = pr_mean
 
         # If calculated PRmean > theta (privacy risk probability threshold) --> Break
@@ -182,7 +183,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
             #break
             print('Max PR Mean > theta')
         arr_o = max_combination
-        #print(arr_o)
+        print('\n')
 
     return arr_o
 
