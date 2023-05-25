@@ -75,7 +75,12 @@ data = ['a1', 'a2']
 char = 'a5'
 
 arr.remove(char)
-print(arr)
+#print(arr)
+
+for ind in arr:
+    print(ind)
+    if ind not in data:
+        oj = ind
 
 
 

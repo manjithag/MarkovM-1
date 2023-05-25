@@ -10,7 +10,7 @@ import scipy.stats as stats
 import numpy as np
 from itertools import permutations
 from mmrisk_for_workflow import calc_pr_mean
-from mmRisk_manySAs import create_Risk_Dataframe
+#from mmRisk_manySAs import create_Risk_Dataframe
 
 def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     ## This finds the ordered attributes o1,⋯, om that gives the highest mean, median, maximum or marketer risk.
@@ -124,17 +124,8 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     print('\nMean Single Attribute Indexes after sorting')
     print(mean_sar_series_indexes_list)
 
-    #max_single_attri_risk = max(mean_sar_arr)
-    #max_single_attri_risk = mean_sar_arr[0]  # Highest single attribute mean risk = 1st element of the sorted array
-
     # Atrribute name having the highest single attribute mean risk
     o1 = mean_sar_series_indexes_list[0]
-
-    #print()
-    #print(o1)
-
-    ## 4. Finding o(i+1) from i = 2 to i = m-1
-
 
     def find_attri_combinations(attributes):
         # This function finds all the attribute combinations (without symetry) with all elements in 'attributes'
@@ -171,16 +162,25 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     arr_o.append(o1)
 
 
+
     for val in range (1,m):       # This for loop runs from i=1 to i=m-1
         print('====== For loop - val = '+str(val) + ' ================================= ')
 
         # a) Finding the attribute having the next highest single attribute risk
-        oj = mean_sar_series_indexes_list[val]
+        print(mean_sar_series_indexes_list)
+        print(arr_o)
+        #oj = ''
+        for ind in mean_sar_series_indexes_list:
+            print(ind)
+            if ind not in arr_o:
+                oj = ind
+                break
         #print(mean_sar_series_indexes_list)
-        print('Oj =' + str(oj))
+        print('Oj = ' + str(oj))
 
         # b) Finding the attribute having the highest correlation with any of attribute in O
 
+        # A float to store the highest correlation values for each attributes in 'arr_o'
         max_corr_o = 0
 
         for attri in arr_o:
@@ -193,8 +193,6 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
         # Calculating PRmean for all the combinations of o1...oj attributes
 
-        #print(arr_o)
-        #print(oj)
         arr_with_oj = arr_o + oj.split()
         #print(arr_with_oj)
         combinations_j = find_attri_combinations(arr_with_oj)
