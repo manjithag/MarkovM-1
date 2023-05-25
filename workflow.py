@@ -126,7 +126,6 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
     for val in range (1,m):       # This for loop runs from i=1 to i=m-1
         print('For loop - val = '+str(val))
-        print('O order = ' + str(arr_o))
 
         # a) Finding the attribute having the next highest single attribute risk
         oj = mean_sar_series_indexes_list[val]
@@ -178,12 +177,16 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
                 max_combination = list(comb)
                 max_pr_mean = pr_mean
 
+        arr_o = max_combination
+
+        print('O order = ' + str(arr_o))
+        print('Max PR Mean = ' + str(max_pr_mean))
+        print('\n')
+
         # If calculated PRmean > theta (privacy risk probability threshold) --> Break
         if max_pr_mean > theta:
-            #break
             print('Max PR Mean > theta')
-        arr_o = max_combination
-        print('\n')
+            break
 
     return arr_o
 
