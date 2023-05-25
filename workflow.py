@@ -171,7 +171,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
         print(arr_o)
         #oj = ''
         for ind in mean_sar_series_indexes_list:
-            print(ind)
+            #print(ind)
             if ind not in arr_o:
                 oj = ind
                 break
@@ -182,12 +182,28 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
         # A float to store the highest correlation values for each attributes in 'arr_o'
         max_corr_o = 0
-
+        '''
         for attri in arr_o:
             highest_correlated_attribute, highest_correlation = find_highest_correlation(corr_df,attri)
             if highest_correlation > max_corr_o:
                 max_corr_o = highest_correlation
+            if highest_correlated_attribute not in arr_o:
                 ok = highest_correlated_attribute
+        '''
+        arr_ok = []
+        for attri in arr_o:
+            arr_ok.append(find_highest_correlation(corr_df,attri))
+
+        #print(arr_ok)
+        ok_corr_df = pd.DataFrame(arr_ok, columns = ['highest_correlated_attribute', 'highest_correlation'])
+        print(ok_corr_df)
+        ok_corr_df_sorted = ok_corr_df.sort_values(by = ['highest_correlation'], ascending = False, ignore_index = True)
+        print(ok_corr_df_sorted)
+
+        for i in range(len(arr_o)):
+            ok = ok_corr_df_sorted.iloc[0]['highest_correlated_attribute']
+            if ok not in arr_o:
+                break
 
         print('Ok = ' + str(ok))
 
@@ -227,7 +243,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
         # If calculated PRmean > theta (privacy risk probability threshold) --> Break
         if max_pr_mean > theta:
             print('Max PR Mean > theta')
-            #break
+            break
 
     return arr_o
 
