@@ -78,7 +78,7 @@ def calc_pr_mean(df:pd.DataFrame,sensitive_attri:list):
     for i in range(df.shape[0]):            # Looping for every index
         risk_list.append(calc_MMRisk(i,sensitive_attri[0]))     # Starting from the first attribute
 
-    print(risk_list)
+    #print(risk_list)
     risk_df = pd.DataFrame(risk_list, columns = ['PR']).T   # .T is used to obtain the transpose of the dataframe
 
     ## Metrices for the whole dataset
@@ -86,25 +86,19 @@ def calc_pr_mean(df:pd.DataFrame,sensitive_attri:list):
     pr_min = min(risk_list)
     pr_max = max(risk_list)
     pr_mean = sum(risk_list)/len(risk_list)
-    pr_mean = round(PRmean,3)
+    pr_mean = round(pr_mean,3)
 
     # Calculating PR median
     risk_list.sort()
     mid = len(risk_list) // 2
     pr_median = (risk_list[mid] + risk_list[mid-1]) / 2
-    pr_median = round(PRmedian,3)
+    pr_median = round(pr_median,3)
 
     # Calculating Marketer Risk
     # Marketer Risk = (No of records with risk of 1) / (total records)
     pr_marketer = risk_list.count(1) / len(risk_list)
 
-    print('PR min = ' + str(pr_min))
-    print('PR max = ' + str(pr_max))
     print('PR mean = ' + str(pr_mean))
-    print('PR median = ' + str(pr_median))
-    print('PR marketer = ' + str(pr_marketer))
-    print(risk_list)
-    print('\n')
 
     return pr_mean
 

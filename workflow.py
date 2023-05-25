@@ -76,12 +76,18 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     #print(mean_sar_arr)
 
     mean_sar_series = pd.Series(mean_sar_arr,index = attributes)
+    print(mean_sar_series)
 
-    # Get the index series when the data is sorted in descending order
+    # Get the index series (Only index numbers) when the data is sorted in descending order
     mean_sar_series_indexes = mean_sar_series.argsort()[::-1]
 
-    # Convert the index series to a list
-    mean_sar_series_indexes_list = mean_sar_series_indexes.tolist()
+    mean_sar_series_indexes_list = []           # List to store the exact names of attributes as sorted order
+
+    # Assigning exact names of attributes to the list
+    for ind in mean_sar_series_indexes:
+        mean_sar_series_indexes_list.append(attributes[ind])
+
+    #print(mean_sar_series_indexes_list)
 
     #max_single_attri_risk = max(mean_sar_arr)
     #max_single_attri_risk = mean_sar_arr[0]  # Highest single attribute mean risk = 1st element of the sorted array
@@ -90,7 +96,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     o1 = mean_sar_series_indexes_list[0]
 
     #print(max_single_attri_risk)
-    print(o1)
+    #print(o1)
 
     ## 4. Finding o(i+1) from i = 2 to i = m-1
 
@@ -119,51 +125,64 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     m = len(attributes)
 
     for val in range (1,m):       # This for loop runs from i=1 to i=m-1
+        print('For loop - val = '+str(val))
+        print('O order = ' + str(arr_o))
+
         # a) Finding the attribute having the next highest single attribute risk
         oj = mean_sar_series_indexes_list[val]
-        print(oj)
+        #print(mean_sar_series_indexes_list)
 
         # b) Finding the attribute having the highest correlation with oi
         corr_series = corr_df[arr_o[val-1]]
-        print(corr_series)
+        #print(corr_series)
+        #print('OK')
 
         # Get the index series when the data is sorted in descending order
-        descending_indexes = corr_series.argsort()[::-1]
+        corr_series_indexes = corr_series.argsort()[::-1]
 
-        # Convert the index series to a list
-        descending_indexes_list = descending_indexes.tolist()
+        corr_series_indexes_list = []  # List to store the exact names of attributes as sorted order
 
-        ok = descending_indexes_list[val]
+        # Assigning exact names of attributes to the list
+        for ind in corr_series_indexes:
+            corr_series_indexes_list.append(attributes[ind])
+
+        ok = corr_series_indexes_list[val]
 
         # Calculating PRmean for all the combinations of o1...oj attributes
 
-        arr_with_oj = arr_o + list(oj)
+        #print(arr_o)
+        #print(oj)
+        arr_with_oj = arr_o + oj.split()
+        #print(arr_with_oj)
         combinations_j = find_attri_combinations(arr_with_oj)
+        #print(combinations_j)
         max_pr_mean = 0
         max_combination = []
 
         for comb in combinations_j:
-            pr_mean = calc_pr_mean(comb)
+            pr_mean = calc_pr_mean(df, comb)
             if pr_mean > max_pr_mean:
                 max_combination = comb
                 max_pr_mean = pr_mean
 
         # Calculating PRmean for all the permutations of o1...ok attributes
 
-        arr_with_ok = arr_o + list(ok)
+        arr_with_ok = arr_o + ok.split()
         combinations_k = find_attri_combinations(arr_with_ok)
 
         for comb in combinations_k:
-            pr_mean = calc_pr_mean(comb)
+            #print(comb)
+            pr_mean = calc_pr_mean(df, comb)
             if pr_mean > max_pr_mean:
                 max_combination = comb
                 max_pr_mean = pr_mean
 
         # If calculated PRmean > theta (privacy risk probability threshold) --> Break
         if max_pr_mean > theta:
-            break
+            #break
+            print('Max PR Mean > theta')
         arr_o = max_combination
-        print(arr_o)
+        #print(arr_o)
 
     return arr_o
 
