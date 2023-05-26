@@ -10,7 +10,7 @@ import scipy.stats as stats
 import numpy as np
 from itertools import permutations
 from mmrisk_for_workflow import calc_pr_mean
-#from mmRisk_manySAs import create_Risk_Dataframe
+
 
 def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     ## This finds the ordered attributes o1,⋯, om that gives the highest mean, median, maximum or marketer risk.
@@ -32,7 +32,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
             single_attribute_risks.append(start_prob/no_records)   # Appending with mean single attribute risk
 
-        single_attribute_risks = [round(num, 4) for num in single_attribute_risks]
+        #single_attribute_risks = [round(num, 4) for num in single_attribute_risks]
 
         return single_attribute_risks
 
@@ -56,7 +56,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
         return v
 
     def get_correlation_df():
-        ## This function generates a dataframe of correlation between each attributes.
+        ## This function generates a dataframe of correlation between each attributes in the dataframe.
 
         corr_list = []
 
@@ -70,86 +70,39 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
         return corr_df
 
-    def find_highest_correlation(corr_df,attri):
-        ## Returns the mostly correlated attribute name with the passed 'attri' and related correlation value
-                # Arguments :   corr_df     --> Pandas dataframe of correlations between attributes
-                #               attri       --> An atrribute to find the highest correlation
+    def get_highest_correlated_attri(corr_df,arr_o):
 
-        # Creates a series of correlation of the other attributes with the passed 'attri'
-        corr_series = corr_df[attri]
-        print('\nCorrelations')
-        print(corr_series)
-
-        # Get the index series when the correlations are sorted in descending order.
-        # This is a numbering series without attribute names
-        corr_indexes = corr_series.argsort()[::-1]
-
-        corr_indexes_list = []  # List to store the exact names of attributes as sorted order
-
-        # Assigning exact names of attributes to the list
-        for ind in corr_indexes:
-            corr_indexes_list.append(attributes[ind])
-
-        # Highest correlated attribute is in the 2nd position of the list. (1st position is the same attribute)
-        highest_correlated_attribute = corr_indexes_list[1]
-
-        # Finding the highest correlation
-        corr_list_sorted = corr_series.to_list()        # Converts the series of correlations to a list
-        corr_list_sorted.sort(reverse = True)           # Sorting the list in descending order
-        highest_correlation = corr_list_sorted[1]       # Highest correlation is in the 2nd position of the list.
-
-
-        return highest_correlated_attribute,highest_correlation
-
-    def get_ordered_correlation(corr_df,arr_o):
-
+        # Creates a dataframe with correlations for attributes in 'arr_o' with all the attributes
         corr_df_for_o = corr_df[arr_o]
+        print(corr_df_for_o)
 
         # Create a flattened DataFrame with values, index, and column names
-        print(corr_df_for_o)
-        flattened_df = corr_df_for_o.stack().reset_index()
-        print(flattened_df)
+            # Column name : level_0 --> for the attributes in 'attributes'
+            # Column name : level_1 --> for the attributes in 'arr_o'
+        flattened_corr_df = corr_df_for_o.stack().reset_index()
+        print(flattened_corr_df)
 
-        # Sort the flattened DataFrame in descending order of values
-        sorted_df = flattened_df.sort_values(0, ascending=False)
-        print(sorted_df)
+        # Sort the flattened DataFrame in descending order of correlation values
+        sorted_corr_df = flattened_corr_df.sort_values(0, ascending=False)
+        print(sorted_corr_df)
 
+        # Calculate the number of rows in 'sorted_df'
         no_runs = len(attributes) * len(arr_o)
 
-        ok = 0
-
+        # Check all the records to find 'ok'
+        # ok is the attribute having the highest correlation with one of the attribute in 'arr_o'
+        # But it should not be already available in 'arr_o'
         for i in range(no_runs):
-            corr_val = sorted_df.iloc[i][0]
-            a_i = sorted_df.iloc[i]['level_0']
-            o_i = sorted_df.iloc[i]['level_1']
+            a_i = sorted_corr_df.iloc[i]['level_0']    # Column name : level_0 --> for the attributes in 'attributes'
+            o_i = sorted_corr_df.iloc[i]['level_1']    # Column name : level_1 --> for the attributes in 'arr_o'
 
+            # If a_i = o_i , it gives correlations of 1 since both are same attribute. So a_i != o_i is considered.
             if a_i != o_i:
-                if a_i not in arr_o:
+                if a_i not in arr_o:        # 'ok' should not be already available in 'arr_o'
                     ok = a_i
                     break
         return ok
 
-
-
-
-
-
-
-        '''
-        # Extract the index and column names from the sorted DataFrame
-        values = []
-        index_names = []
-        column_names = []
- 
-        for i in range(num_elements):
-            value = sorted_df.iloc[i][0]
-            index_name = sorted_df.iloc[i]['level_0']
-            column_name = sorted_df.iloc[i]['level_1']
-
-            values.append(value)
-            index_names.append(index_name)
-            column_names.append(column_name)
-        '''
 
     ## 3. Finding the attribute which has the highest mean single attribute risk (o1)
 
@@ -257,9 +210,8 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
                 break
         '''
 
-        ok = get_ordered_correlation(corr_df,arr_o)
+        ok = get_highest_correlated_attri(corr_df,arr_o)
 
-        #ok = 'a1'
         print('Ok = ' + str(ok))
 
         # Calculating PRmean for all the combinations of o1...oj attributes
