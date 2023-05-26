@@ -222,7 +222,6 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
         print('\nNew array of O elements = ' + str(arr_o))
         print('Max PR Mean = ' + str(max_pr_mean))
-        print('\n')
 
         # If calculated PRmean > theta (privacy risk probability threshold) --> Break
         if max_pr_mean > theta:

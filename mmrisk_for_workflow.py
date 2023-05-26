@@ -68,7 +68,7 @@ def calc_pr_mean(df:pd.DataFrame,sensitive_attri:list):
 
         joint_prob = joint_p1 * joint_p2
         MMRisk = 1 - joint_prob
-        MMRisk = round(MMRisk,3)        # Round off the value of MMRisk to 3 decimal points
+        MMRisk = round(MMRisk,5)        # Round off the value of MMRisk to 3 decimal points
 
         return MMRisk
 
@@ -86,13 +86,13 @@ def calc_pr_mean(df:pd.DataFrame,sensitive_attri:list):
     pr_min = min(risk_list)
     pr_max = max(risk_list)
     pr_mean = sum(risk_list)/len(risk_list)
-    pr_mean = round(pr_mean,3)
+    pr_mean = round(pr_mean,5)
 
     # Calculating PR median
     risk_list.sort()
     mid = len(risk_list) // 2
     pr_median = (risk_list[mid] + risk_list[mid-1]) / 2
-    pr_median = round(pr_median,3)
+    pr_median = round(pr_median,5)
 
     # Calculating Marketer Risk
     # Marketer Risk = (No of records with risk of 1) / (total records)
