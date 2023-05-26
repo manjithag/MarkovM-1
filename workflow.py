@@ -106,19 +106,20 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
     ## 3. Finding the attribute which has the highest mean single attribute risk (o1)
 
-    mean_sar_arr = calc_single_attribute_risks()         # A array with mean single attribute risk of all attributes
-                                                        # Length = No of attributes
-    #mean_sar_arr.sort(reverse=True)                      # Sorting the array for descending order
-    #print(mean_sar_arr)
+    # Creates a list with mean single attribute risk of all attributes
+    # Length = No of attributes
+    mean_sar_arr = calc_single_attribute_risks()
 
+    # Creates a pandas series with mean single attribute risk of all attributes with the index of attribute names
     mean_sar_series = pd.Series(mean_sar_arr,index = attributes)
     print('\nMean Single Attribute Risk Table')
     print(mean_sar_series)
 
-    # Get the index series (Only index numbers) when the data is sorted in descending order
+    # Get the index series (Only index numbers) when the mean single attribute risks are sorted in the descending order
     mean_sar_series_indexes = mean_sar_series.argsort()[::-1]
 
-    mean_sar_series_indexes_list = []           # List to store the exact names of attributes as sorted order
+    # List to store the exact names of attributes as sorted order
+    mean_sar_series_indexes_list = []
 
     # Assigning exact names of attributes to the list
     for ind in mean_sar_series_indexes:
@@ -127,7 +128,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     print('\nMean Single Attribute Indexes after sorting')
     print(mean_sar_series_indexes_list)
 
-    # Atrribute name having the highest single attribute mean risk
+    # Finding 'o1' which is the atrribute name having the highest single attribute mean risk
     o1 = mean_sar_series_indexes_list[0]
 
     def find_attri_combinations(attributes):
