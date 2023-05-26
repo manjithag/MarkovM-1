@@ -72,8 +72,6 @@ def calc_pr_mean(df:pd.DataFrame,sensitive_attri:list):
 
         return MMRisk
 
-
-
     risk_list = []                      # List to store calculated risks for every index
     for i in range(df.shape[0]):            # Looping for every index
         risk_list.append(calc_MMRisk(i,sensitive_attri[0]))     # Starting from the first attribute
