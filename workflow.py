@@ -101,7 +101,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
         return highest_correlated_attribute,highest_correlation
 
-    def get_ordered_correlation(corr_df,arr_o,n):
+    def get_ordered_correlation(corr_df,arr_o):
 
         corr_df_for_o = corr_df[arr_o]
 
@@ -113,6 +113,28 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
         # Sort the flattened DataFrame in descending order of values
         sorted_df = flattened_df.sort_values(0, ascending=False)
         print(sorted_df)
+
+        no_runs = len(attributes) * len(arr_o)
+
+        ok = 0
+
+        for i in range(no_runs):
+            corr_val = sorted_df.iloc[i][0]
+            a_i = sorted_df.iloc[i]['level_0']
+            o_i = sorted_df.iloc[i]['level_1']
+
+            if a_i != o_i:
+                if a_i not in arr_o:
+                    ok = a_i
+                    break
+        return ok
+
+
+
+
+
+
+
         '''
         # Extract the index and column names from the sorted DataFrame
         values = []
@@ -235,9 +257,9 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
                 break
         '''
 
-        get_ordered_correlation(corr_df,arr_o,1)
+        ok = get_ordered_correlation(corr_df,arr_o)
 
-        ok = 'a1'
+        #ok = 'a1'
         print('Ok = ' + str(ok))
 
         # Calculating PRmean for all the combinations of o1...oj attributes
