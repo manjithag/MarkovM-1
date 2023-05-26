@@ -29,8 +29,8 @@ attributes1 = ['a1','a2','a3','a4']
 attributes2 = ['a1','a2','a3','a4','a5']
 
 #print(find_workflow(df1,attributes1,0.999))
-#print(find_workflow(df2,attributes1,0.999))
-print(find_workflow(df3,attributes2,0.999))
+print(find_workflow(df2,attributes1,0.999))
+#print(find_workflow(df3,attributes2,0.999))
 
 
 

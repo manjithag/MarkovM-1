@@ -98,7 +98,7 @@ def calc_pr_mean(df:pd.DataFrame,sensitive_attri:list):
     # Marketer Risk = (No of records with risk of 1) / (total records)
     pr_marketer = risk_list.count(1) / len(risk_list)
 
-    print('PR mean = ' + str(pr_mean) + '  Attribute Comb = ' + str(sensitive_attri))
+    print( 'Attribute Comb = ' + str(sensitive_attri) + '  -  PR mean = ' + str(pr_mean))
 
     return pr_mean
 

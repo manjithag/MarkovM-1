@@ -74,16 +74,17 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
         # Creates a dataframe with correlations for attributes in 'arr_o' with all the attributes
         corr_df_for_o = corr_df[arr_o]
+        print('Correlations for attributes in O = ' + str(arr_o) + ' with all the attributes')
         print(corr_df_for_o)
 
         # Create a flattened DataFrame with values, index, and column names
             # Column name : level_0 --> for the attributes in 'attributes'
             # Column name : level_1 --> for the attributes in 'arr_o'
         flattened_corr_df = corr_df_for_o.stack().reset_index()
-        print(flattened_corr_df)
 
         # Sort the flattened DataFrame in descending order of correlation values
         sorted_corr_df = flattened_corr_df.sort_values(0, ascending=False)
+        print('\nFlattened and sorted correlations')
         print(sorted_corr_df)
 
         # Calculate the number of rows in 'sorted_df'
@@ -125,25 +126,27 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
     for ind in mean_sar_series_indexes:
         mean_sar_series_indexes_list.append(attributes[ind])
 
-    print('\nMean Single Attribute Indexes after sorting')
-    print(mean_sar_series_indexes_list)
+    print('\nAttribute order after sorting = ' + str(mean_sar_series_indexes_list))
 
     # Finding 'o1' which is the atrribute name having the highest single attribute mean risk
     o1 = mean_sar_series_indexes_list[0]
+    print('O1 = ' + str(o1))
 
-    def find_attri_combinations(attributes):
-        # This function finds all the attribute combinations (without symetry) with all elements in 'attributes'
+    def find_attri_combinations(attri_list : list):
+        # This function finds all the attribute combinations (without reversed) with all elements in 'attri_list'
+        # Ex : Original combination = ['a', 'c', 'b']   Reversed combination = ['b', 'c', 'a']
 
-        #Length of the attributes list
-        length_combinations = len(attributes)
+        # Length of the 'attri_list'
+        length_combinations = len(attri_list)
 
-        # Generate all the shuffled combinations of the elements (With all elements) of the attribute list
-        all_combinations = list(permutations(attributes, length_combinations))
+        # Generate all the shuffled combinations of the elements (With all elements) of 'attri_list' as a list
+        # This includes both original and reversed combination
+        all_combinations = list(permutations(attri_list, length_combinations))
 
-        # A list for storing the combinations excluding symmetric
+        # A list for storing the combinations excluding reversed combination
         combinations_without_symm = []
 
-        # Checking for the list with its reversed lists
+        # Storing the combinations excluding reversed combinations
         for comb in all_combinations:
             if comb not in combinations_without_symm and comb[::-1] not in combinations_without_symm:
                 combinations_without_symm.append(comb)
@@ -155,7 +158,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
     # Generate the dataframe of correlations
     corr_df = get_correlation_df()
-    print('Correlation Table')
+    print('\nCorrelation Table')
     print(corr_df)
 
     # Calculating 'm' ( = No of attributes)
@@ -163,66 +166,39 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
     # Creating a list for 'O'
     arr_o = []
+
+    #Add found 'o1' as the first element of 'arr_o'
     arr_o.append(o1)
 
+    ## Repetitive calculations to find o2, o3, o4.....
+    # This for loop runs from i=1 to i=m-1
+    for val in range (1,m):
 
+        print('\n====== Finding o'+str(val+1) + ' =========================================== ')
+        print('Array of O elements = ' + str(arr_o))
 
-    for val in range (1,m):       # This for loop runs from i=1 to i=m-1
-        print('====== For loop - val = '+str(val) + ' ================================= ')
-
-        # a) Finding the attribute having the next highest single attribute risk
-        print(mean_sar_series_indexes_list)
-        print(arr_o)
-        #oj = ''
+        ## a) Finding the attribute having the next highest single attribute risk
         for ind in mean_sar_series_indexes_list:
-            #print(ind)
             if ind not in arr_o:
                 oj = ind
                 break
-        #print(mean_sar_series_indexes_list)
+
         print('Oj = ' + str(oj))
 
-        # b) Finding the attribute having the highest correlation with any of attribute in O
-
-        # A float to store the highest correlation values for each attributes in 'arr_o'
-        max_corr_o = 0
-        '''
-        for attri in arr_o:
-            highest_correlated_attribute, highest_correlation = find_highest_correlation(corr_df,attri)
-            if highest_correlation > max_corr_o:
-                max_corr_o = highest_correlation
-            if highest_correlated_attribute not in arr_o:
-                ok = highest_correlated_attribute
-        '''
-        '''
-        arr_ok = []
-        for attri in arr_o:
-            arr_ok.append(find_highest_correlation(corr_df,attri))
-
-        #print(arr_ok)
-        ok_corr_df = pd.DataFrame(arr_ok, columns = ['highest_correlated_attribute', 'highest_correlation'])
-        print(ok_corr_df)
-        ok_corr_df_sorted = ok_corr_df.sort_values(by = ['highest_correlation'], ascending = False, ignore_index = True)
-        print(ok_corr_df_sorted)
-
-        for i in range(len(arr_o)):
-            ok = ok_corr_df_sorted.iloc[0]['highest_correlated_attribute']
-            if ok not in arr_o:
-                break
-        '''
+        ## b) Finding the attribute having the highest correlation with any of attribute in O
 
         ok = get_highest_correlated_attri(corr_df,arr_o)
 
-        print('Ok = ' + str(ok))
+        print('\nOk = ' + str(ok) + '\n')
 
-        # Calculating PRmean for all the combinations of o1...oj attributes
+        ## c) Calculating PRmean for all the combinations of o1...oj attributes
 
+        # Create a list adding 'oj' to 'arr_o' to find the possible combinations
         arr_with_oj = arr_o + oj.split()
-        #print(arr_with_oj)
         combinations_j = find_attri_combinations(arr_with_oj)
-        #print(combinations_j)
-        max_pr_mean = 0
-        max_combination = []
+
+        max_pr_mean = 0         # A float to store the maximum PRmean of all the combinations
+        max_combination = []    # A list to store the attribute combination with maximum PRmean
 
         for comb in combinations_j:
             pr_mean = calc_pr_mean(df, comb)
@@ -230,13 +206,13 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
                 max_combination = list(comb)
                 max_pr_mean = pr_mean
 
-        # Calculating PRmean for all the permutations of o1...ok attributes
+        ## d) Calculating PRmean for all the permutations of o1...ok attributes
 
+        # Create a list adding 'ok' to 'arr_o' to find the possible combinations
         arr_with_ok = arr_o + ok.split()
         combinations_k = find_attri_combinations(arr_with_ok)
 
         for comb in combinations_k:
-            #print(comb)
             pr_mean = calc_pr_mean(df, comb)
             if pr_mean > max_pr_mean:
                 max_combination = list(comb)
@@ -244,7 +220,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
         arr_o = max_combination
 
-        print('O order = ' + str(arr_o))
+        print('\nNew array of O elements = ' + str(arr_o))
         print('Max PR Mean = ' + str(max_pr_mean))
         print('\n')
 
