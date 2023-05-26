@@ -101,6 +101,34 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
 
         return highest_correlated_attribute,highest_correlation
 
+    def get_ordered_correlation(corr_df,arr_o,n):
+
+        corr_df_for_o = corr_df[arr_o]
+
+        # Create a flattened DataFrame with values, index, and column names
+        print(corr_df_for_o)
+        flattened_df = corr_df_for_o.stack().reset_index()
+        print(flattened_df)
+
+        # Sort the flattened DataFrame in descending order of values
+        sorted_df = flattened_df.sort_values(0, ascending=False)
+        print(sorted_df)
+        '''
+        # Extract the index and column names from the sorted DataFrame
+        values = []
+        index_names = []
+        column_names = []
+
+        for i in range(num_elements):
+            value = sorted_df.iloc[i][0]
+            index_name = sorted_df.iloc[i]['level_0']
+            column_name = sorted_df.iloc[i]['level_1']
+
+            values.append(value)
+            index_names.append(index_name)
+            column_names.append(column_name)
+        '''
+
     ## 3. Finding the attribute which has the highest mean single attribute risk (o1)
 
     mean_sar_arr = calc_single_attribute_risks()         # A array with mean single attribute risk of all attributes
@@ -190,6 +218,7 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
             if highest_correlated_attribute not in arr_o:
                 ok = highest_correlated_attribute
         '''
+        '''
         arr_ok = []
         for attri in arr_o:
             arr_ok.append(find_highest_correlation(corr_df,attri))
@@ -204,7 +233,11 @@ def find_workflow(df : pd.DataFrame, attributes : list, theta : float):
             ok = ok_corr_df_sorted.iloc[0]['highest_correlated_attribute']
             if ok not in arr_o:
                 break
+        '''
 
+        get_ordered_correlation(corr_df,arr_o,1)
+
+        ok = 'a1'
         print('Ok = ' + str(ok))
 
         # Calculating PRmean for all the combinations of o1...oj attributes

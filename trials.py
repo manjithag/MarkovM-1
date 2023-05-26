@@ -72,15 +72,65 @@ arr.sort(reverse=True)
 
 arr = ['a1', 'a2', 'a4', 'a3']
 data = ['a1', 'a2']
-char = 'a5'
+char = 'a1'
 
 arr.remove(char)
 #print(arr)
 
 for ind in arr:
-    print(ind)
+    #print(ind)
     if ind not in data:
         oj = ind
+
+
+import pandas as pd
+
+def get_highest_elements(df, num_elements):
+    # Create a flattened DataFrame with values, index, and column names
+    print(df)
+    flattened_df = df.stack().reset_index()
+    print(flattened_df)
+
+    # Sort the flattened DataFrame in descending order of values
+    sorted_df = flattened_df.sort_values(0, ascending=False)
+    print(sorted_df )
+
+    # Extract the index and column names from the sorted DataFrame
+    values = []
+    index_names = []
+    column_names = []
+
+    for i in range(num_elements):
+        value = sorted_df.iloc[i][0]
+        index_name = sorted_df.iloc[i]['level_0']
+        column_name = sorted_df.iloc[i]['level_1']
+
+        values.append(value)
+        index_names.append(index_name)
+        column_names.append(column_name)
+
+    return values, index_names, column_names
+
+# Create a sample DataFrame
+data = {'A': [10, 20, 30],
+        'B': [40, 50, 60],
+        'C': [70, 80, 90]}
+df = pd.DataFrame(data)
+df = df[['A','B']]
+
+# Call the function to get the highest elements
+num_elements = 3  # Retrieve the top 3 highest elements
+values, index_names, column_names = get_highest_elements(df, num_elements)
+
+# Print the results
+for i in range(num_elements):
+    print("Highest value:", values[i])
+    print("Index:", index_names[i])
+    print("Column:", column_names[i])
+    print()
+
+
+
 
 
 
